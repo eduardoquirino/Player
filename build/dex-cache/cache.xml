@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/eduardo/AndroidStudioProjects/MyApp/firstApp/build/pre-dexed/debug/classes-1ef14c69740840c173a37c835b66d718ecfa6dc8.jar"
+        jar="/Users/eduardo/AndroidStudioProjects/MyApp/build/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+    <item
+        dex="/Users/eduardo/AndroidStudioProjects/MyApp/firstApp/build/pre-dexed/debug/support-v4-19.1.0-0e93be6057065fef3650311d2680cff6941a0e72.jar"
+        jar="/Users/eduardo/development/android_SDK/android_sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+    <item
+        dex="/Users/eduardo/AndroidStudioProjects/MyApp/firstApp/build/pre-dexed/debug/mp3agic-0.8.4-c39f6255d340d4b1b84a260add898086178382bb.jar"
+        jar="/Users/eduardo/AndroidStudioProjects/MyApp/firstApp/libs/mp3agic-0.8.4.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="8c2b0a9ce04e92f85d948fe76281e4c26a072aa3"/>
+
+</pre-dex-items>
