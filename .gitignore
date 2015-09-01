@@ -15,3 +15,4 @@
 /firstApp/build.gradle
 /gradle/wrapper/gradle-wrapper.properties
 .myidea
+.test
