@@ -18,12 +18,12 @@ public class PlayListManager {
     private static boolean activateSuffleMode = true; //go to the playListManager
 
     public static enum  RepeatMode  {
-        none,
-        One,
+        NONE,
+        ONE,
         ALL
     };
 
-    private static RepeatMode mode;
+    private static RepeatMode repeatMode;
 
     private static boolean suffleMode = true;
 
@@ -35,20 +35,12 @@ public class PlayListManager {
         return playList[index];
     }
 
-//    public void setMedia (int position) {
-//        Media media = getMedia(position);
-//
-//        PlayerManager.setMedia(media);
-//        PlayerManager.play();
-//    }
-
     public static void play (int position) {
         currentMediaIndex = position;
         Media media = getMedia(position);
 
         PlayerManager.setMedia(media);
         PlayerManager.play();
-
     }
 
     private static int getNextIndex(int index) {
@@ -97,14 +89,42 @@ public class PlayListManager {
         return PlayerManager.isPlaying();
     }
 
-    public static void setRepeatMode (RepeatMode repeatMode) {
-        mode = repeatMode;
+    public static void setRepeatMode (RepeatMode _repeatMode) {
+        repeatMode = _repeatMode;
+    }
+
+
+    public static RepeatMode changeRepeatMode (RepeatMode mode) {
+
+        switch(mode) {
+            case NONE:
+                repeatMode = RepeatMode.ONE ;
+                break;
+            case  ONE:
+                repeatMode = RepeatMode.ALL ;
+                break;
+            case  ALL:
+                repeatMode = RepeatMode.NONE ;
+                break;
+        }
+
+       return mode;
+    }
+
+    public static RepeatMode getRepeatMode () {
+        if(repeatMode == null){
+            repeatMode = RepeatMode.NONE;
+        }
+
+        return repeatMode;
     }
 
     public static void enableSuffle(boolean activate) {
 
         suffleMode = activate;
     }
+
+
 
 //TODO: Suffle
 

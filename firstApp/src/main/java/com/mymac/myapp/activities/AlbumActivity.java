@@ -84,7 +84,6 @@ public class AlbumActivity extends ActionBarActivity {
     private void stop() {}
 
     private void resumeMediaEvent(){
-//        PlayerManager.resume();
         PlayListManager.resume();
     }
 
@@ -119,8 +118,6 @@ public class AlbumActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(albumName);
         Log.d("SharedPreference", "####SharedPreference +STR: " + albumPath);
 
-
-
         File[] files =  FileSystemHelper.getAlbum(albumPath);
         listView = (ListView) findViewById(R.id.list);
 
@@ -128,7 +125,6 @@ public class AlbumActivity extends ActionBarActivity {
         Media[] medias = organize.getMedias();
 
         PlayListManager.setPlayList(medias);
-
 
         ArrayMusicAdapter adapter = new ArrayMusicAdapter(this, R.layout.list_view_row_music_item, medias);
 
@@ -142,7 +138,6 @@ public class AlbumActivity extends ActionBarActivity {
 
                 // ListView Clicked item index
                 currentMediaIndex = position;
-
 
                 // ListView Clicked item value
                 Media  media = (Media) listView.getItemAtPosition(position);
@@ -160,9 +155,6 @@ public class AlbumActivity extends ActionBarActivity {
                     playerContainerView.setEnabled(true);
                     playerContainerView.setVisibility(View.VISIBLE);
 
-
-
-
                 } else {
                     Intent intent = new Intent(Activities.ALBUM_ACTIVITY);
                     intent.putExtra("albumPath", media.getPath());
@@ -172,7 +164,6 @@ public class AlbumActivity extends ActionBarActivity {
             }
 
         });
-
 
         playerButton = (ImageButton) findViewById(R.id.btnPlay);
         playerButton.setImageResource(R.drawable.btn_pause);
@@ -195,12 +186,7 @@ public class AlbumActivity extends ActionBarActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //new Handler().postDelayed(new Runnable() {
-                  //  public void run() {
-                        nextButton.setImageResource(R.drawable.btn_next_selection);
-                //    }
-                //}, 50L);
+                nextButton.setImageResource(R.drawable.btn_next_selection);
 
                 PlayListManager.playNextMedia();
 
@@ -217,12 +203,7 @@ public class AlbumActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-              //  new Handler().postDelayed(new Runnable() {
-                //    public void run() {
-                        previousButton.setImageResource(R.drawable.btn_previous_selection);
-               //     }
-               // }, 50L);
-
+                previousButton.setImageResource(R.drawable.btn_previous_selection);
 
                 PlayListManager.playPreviousMedia();
 
@@ -234,7 +215,6 @@ public class AlbumActivity extends ActionBarActivity {
             }
         });
 
-
         suffleButton = (ImageButton) findViewById(R.id.btnSuffle);
         suffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,19 +225,9 @@ public class AlbumActivity extends ActionBarActivity {
 
                         activateSuffleMode = !activateSuffleMode;
 
-
-
-                        //Media media = (Media) listView.getItemAtPosition(position);
-                        //play(media);
-
-                        //To-Do:
-                        //PlayListManager.play();
-
                         suffleButton.setImageResource(R.drawable.btn_no_shuffle);
-
                     }
                 }, 50L);
-
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
@@ -272,17 +242,31 @@ public class AlbumActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        repeatModeButton.setImageResource(R.drawable.btn_repeat_black_one);
-                    }
-                }, 50L);
 
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        repeatModeButton.setImageResource(R.drawable.btn_repeat_black_all);
-                    }
-                }, 100L);
+                PlayListManager.changeRepeatMode(PlayListManager.getRepeatMode());
+
+                if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.NONE ) {
+
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            repeatModeButton.setImageResource(R.drawable.btn_repeat_black_one);
+                        }
+                    }, 50L);
+
+                } else if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.ONE ) {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            repeatModeButton.setImageResource(R.drawable.btn_repeat_black_one);
+                        }
+                    }, 50L);
+
+                }else if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.ALL ){
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            repeatModeButton.setImageResource(R.drawable.btn_repeat_black_all);
+                        }
+                    }, 100L);
+                }
             }
         });
 
@@ -364,57 +348,6 @@ public class AlbumActivity extends ActionBarActivity {
             }
         });
 
-    }
-
-    private boolean checkExtension( String fileName ) {
-        String ext = getFileExtension(fileName);
-        if ( ext == null) return false;
-        try {
-            if ( SupportedFileFormat.valueOf(ext.toUpperCase()) != null ) {
-                return true;
-            }
-        } catch(IllegalArgumentException e) {
-            return false;
-        }
-        return false;
-    }
-
-    public String getFileExtension( String fileName ) {
-        int i = fileName.lastIndexOf('.');
-        if (i > 0) {
-            return fileName.substring(i+1);
-        } else
-            return null;
-    }
-    public enum SupportedFileFormat
-    {
-        _3GP("3gp"),
-        MP4("mp4"),
-        M4A("m4a"),
-        AAC("aac"),
-        TS("ts"),
-        FLAC("flac"),
-        MP3("mp3"),
-        MID("mid"),
-        XMF("xmf"),
-        MXMF("mxmf"),
-        RTTTL("rtttl"),
-        RTX("rtx"),
-        OTA("ota"),
-        IMY("imy"),
-        OGG("ogg"),
-        MKV("mkv"),
-        WAV("wav");
-
-        private String filesuffix;
-
-        SupportedFileFormat( String filesuffix ) {
-            this.filesuffix = filesuffix;
-        }
-
-        public String getFilesuffix() {
-            return filesuffix;
-        }
     }
 
     @Override
