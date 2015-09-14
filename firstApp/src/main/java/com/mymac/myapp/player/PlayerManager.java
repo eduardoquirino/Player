@@ -139,6 +139,13 @@ public class PlayerManager {
         return currentPosition;
     }
 
+    public static void setLooping(boolean isLooping){
+        mp.setLooping(isLooping);
+    }
+
+    public static MediaPlayer getMediaPlayer(){
+        return mp;
+    }
     //TODO: implementar setOnCompletionListener
 //    public static void completion(Runnable runnable){
 //        mp.OnCompletionListener(new){

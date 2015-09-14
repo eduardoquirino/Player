@@ -1,5 +1,7 @@
 package com.mymac.myapp.player;
 
+import android.media.MediaPlayer;
+
 import com.mymac.myapp.models.Media;
 
 import java.util.Random;
@@ -13,9 +15,9 @@ public class PlayListManager {
 
     private static int currentMediaIndex = 0;
 
-//    private static PlayerManager player;
 
-    private static boolean activateSuffleMode = true; //go to the playListManager
+
+    // private static boolean activateSuffleMode = true; //go to the playListManager
 
     public static enum  RepeatMode  {
         NONE,
@@ -23,9 +25,13 @@ public class PlayListManager {
         ALL
     };
 
-    private static RepeatMode repeatMode;
+    //TODO: save current playList
 
-    private static boolean suffleMode = true;
+    //TODO: Save and load repeatMode
+    private static RepeatMode repeatMode = RepeatMode.NONE;
+
+    //TODO: Save and load suffleMode
+    private static boolean isOnSuffleMode = false;
 
     public static void setPlayList(Media[] medias) {
         playList = medias;
@@ -41,6 +47,8 @@ public class PlayListManager {
 
         PlayerManager.setMedia(media);
         PlayerManager.play();
+
+        setMediaCompletionEvent();
     }
 
     private static int getNextIndex(int index) {
@@ -71,6 +79,7 @@ public class PlayListManager {
 
         PlayerManager.setMedia(media);
         PlayerManager.play();
+        setMediaCompletionEvent();
     }
 
     public static void playPreviousMedia() {
@@ -79,6 +88,7 @@ public class PlayListManager {
 
         PlayerManager.setMedia(media);
         PlayerManager.play();
+        setMediaCompletionEvent();
     }
 
     public static void seekTo(int msec) {
@@ -92,7 +102,6 @@ public class PlayListManager {
     public static void setRepeatMode (RepeatMode _repeatMode) {
         repeatMode = _repeatMode;
     }
-
 
     public static RepeatMode changeRepeatMode (RepeatMode mode) {
 
@@ -108,7 +117,7 @@ public class PlayListManager {
                 break;
         }
 
-       return mode;
+       return repeatMode;
     }
 
     public static RepeatMode getRepeatMode () {
@@ -119,22 +128,51 @@ public class PlayListManager {
         return repeatMode;
     }
 
-    public static void enableSuffle(boolean activate) {
-
-        suffleMode = activate;
+    public static void setLooping(boolean isLooping){
+        PlayerManager.setLooping(isLooping);
     }
 
+    public static void setMediaCompletionEvent() {
 
+        PlayerManager.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
 
-//TODO: Suffle
+            @Override
+            public void onCompletion(MediaPlayer mp) {
 
-//    public static int getRamdon () {
-//        int max = playList.length -1;
-//        Random random = new Random();
-//        int position = random.nextInt(max);
-//    }
+                if (PlayListManager.isOnSuffleMode()) {
+                    currentMediaIndex =  PlayListManager.getRandom(playList.length -1);
+                    play(currentMediaIndex);
+                    return;
+                }
 
-    //TODO: RepeatMode
+                if (PlayListManager.getRepeatMode() == RepeatMode.ONE) {
+                    play(currentMediaIndex);
+                    return;
+                } else if (currentMediaIndex == playList.length - 1) {
+
+                    if (PlayListManager.getRepeatMode() == RepeatMode.NONE) {
+                        PlayerManager.stop();
+                        return;
+                    }
+                }
+                playNextMedia();
+            }
+        });
+    }
+
+    public static boolean isOnSuffleMode() {
+        return isOnSuffleMode;
+    }
+
+    public static void setSuffleMode(boolean isActivated) {
+        PlayListManager.isOnSuffleMode = isActivated;
+    }
+
+    public static int getRandom (int max) {
+        Random random = new Random();
+        int position = random.nextInt(max);
+        return position;
+    }
 
     public static int getDuration(){
         return PlayerManager.getDuration();

@@ -53,7 +53,6 @@ public class ArrayMusicAdapter extends ArrayAdapter<Media> {
             convertView = inflater.inflate(layoutResourceId, parent, false);
         }
 
-
         // object item based on the position
         Media media = medias[position];
 
@@ -73,10 +72,7 @@ public class ArrayMusicAdapter extends ArrayAdapter<Media> {
             imageView.setVisibility(View.VISIBLE);
         }
 
-
-
         return convertView;
-
     }
 
 }

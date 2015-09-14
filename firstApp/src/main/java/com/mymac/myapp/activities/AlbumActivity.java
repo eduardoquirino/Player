@@ -40,10 +40,6 @@ public class AlbumActivity extends ActionBarActivity {
     ImageButton backwardButton;
     ImageButton forwardButton;
 
-    ///Controllers
-    boolean activateSuffleMode = true; // go to  the playListManager
-
-
     SeekBar seekBar;
     final static int EVERY_SECOND = 100;
     Handler handler;
@@ -51,8 +47,6 @@ public class AlbumActivity extends ActionBarActivity {
 
     private int currentMediaIndex;
 
-    //MediaPlayer mp;
-   // private static PlayerManager player;
     private static PlayListManager playListManager;
 
     private LinearLayout playerContainerView;
@@ -60,13 +54,10 @@ public class AlbumActivity extends ActionBarActivity {
     TextView leftTimeView;
     TextView durationTextView;
 
-   // private void play(Media media){
-//        PlayerManager.setMedia(media);
-//        PlayerManager.play();
-   private void play(int position){
-        //TO-DO:
-        PlayListManager.play(position);
 
+   private void play(int position){
+
+        PlayListManager.play(position);
 
         //Timers
         leftTimeView = (TextView) findViewById(R.id.lefTime);
@@ -94,7 +85,6 @@ public class AlbumActivity extends ActionBarActivity {
         long minute = (millis / (1000 * 60)) % 60;
         long hour = (millis / (1000 * 60 * 60)) % 24;
 
-        //String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, millis);
         String time = " ";
         if (hour != 0) {
             time = String.format("%02d:%02d:%02d", hour, minute, second);
@@ -220,11 +210,10 @@ public class AlbumActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
+                PlayListManager.setSuffleMode(!PlayListManager.isOnSuffleMode());
+
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-
-                        activateSuffleMode = !activateSuffleMode;
-
                         suffleButton.setImageResource(R.drawable.btn_no_shuffle);
                     }
                 }, 50L);
@@ -242,10 +231,9 @@ public class AlbumActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-
                 PlayListManager.changeRepeatMode(PlayListManager.getRepeatMode());
 
-                if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.NONE ) {
+                if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.NONE) {
 
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
@@ -253,14 +241,15 @@ public class AlbumActivity extends ActionBarActivity {
                         }
                     }, 50L);
 
-                } else if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.ONE ) {
+                } else if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.ONE) {
+
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             repeatModeButton.setImageResource(R.drawable.btn_repeat_black_one);
                         }
                     }, 50L);
 
-                }else if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.ALL ){
+                }else if (PlayListManager.getRepeatMode() == PlayListManager.RepeatMode.ALL){
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             repeatModeButton.setImageResource(R.drawable.btn_repeat_black_all);
@@ -325,6 +314,7 @@ public class AlbumActivity extends ActionBarActivity {
                         handler.postDelayed(onEverySecond, EVERY_SECOND);
                         String timeSTR = setTime(position);
                         leftTimeView.setText(timeSTR);
+                        durationTextView.setText(setTime(PlayerManager.getDuration()));
                     }
                 }
             }
@@ -347,7 +337,6 @@ public class AlbumActivity extends ActionBarActivity {
                 currentProgress = progress;
             }
         });
-
     }
 
     @Override
